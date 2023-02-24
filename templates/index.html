@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Event Predictor</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='sarah.png') }}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <meta property="og:title" content="Predictor" />
+  <meta property="og:description" content="Predict the future!" />
+  <meta property="og:image" content="{{ url_for('static', filename='sarah.png') }}" />
+  <meta property="og:url" content="http://predictor.pmdata.info" />
+  <meta property="og:type" content="website" />
+</head>
+
+<body>
+  <div class="px-4 py-5 my-5 text-center">
+    <img src="{{ url_for('static', filename='sarah.png') }}" width="50" height="50" />
+    <h1 class="display-5 fw-bold">Predict the Future!</h1>
+
+    <h5>Ask a yes or no question about a future event</h5>
+    <div class="col-lg-6 mx-auto">
+      <form action="/" method="post">
+        <input type="text" name="question" class="form-control" placeholder="e.g. Will the Ukraine War end this year?"
+          required />
+        <br />
+        <input type="submit" class="btn btn-primary" value="Predict!" />
+        <br />
+      </form>
+    </div>
+
+    {% if result %}
+    <h3>Probability: {{ result }}</h3>
+    {% endif %}
+    {% if metaforecast_questions %}
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+            Referenced Forecasts
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <ul class="list-group">
+              {% endif %}
+              {% for question in metaforecast_questions %}
+              <li class="list-group-item">
+                <h5> {{ question.title }} </h5>
+                <p>Platform: {{ question.platform }} </p>
+                <p></p>Probability: {{ question.probability }} </p>
+              </li>
+              {% endfor %}
+              {% if metaforecast_questions %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"></script>
+
+</body>
